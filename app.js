@@ -6,6 +6,12 @@
  * No dependencies.
  */
 
+(() => {
+  const root = document.documentElement;
+  root.classList.remove('no-js');
+  root.classList.add('js');
+})();
+
 const qs = (sel, el = document) => el.querySelector(sel);
 const qsa = (sel, el = document) => Array.from(el.querySelectorAll(sel));
 
@@ -76,40 +82,20 @@ const qsa = (sel, el = document) => Array.from(el.querySelectorAll(sel));
   }
 })();
 
-// Smooth scroll only for same-page anchors (keeps native behavior for reduced motion users)
-(() => {
-  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduceMotion) return;
-
-  qsa('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', (e) => {
-      const href = a.getAttribute('href') || '';
-      if (href.length < 2) return;
-      const target = qs(href);
-      if (!target) return;
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      history.pushState(null, '', href);
-    });
-  });
-})();
-
 // WhatsApp CTAs
 (() => {
-  const rawPhone = document.body?.dataset.whatsappPhone || '50400000000';
+  const rawPhone = document.body?.dataset.whatsappPhone || '50499533576';
   const phone = rawPhone.replace(/\D/g, '');
 
-  const defaultMessage = 'Hola, quiero un diagnóstico sin costo para hacer mi casa inteligente en Tegucigalpa.';
+  const defaultMessage = 'Hola, quiero un diagnóstico sin costo para hacer mi casa inteligente en Tegucigalpa y alrededores.';
 
   const buildMessageFromForm = (data) => {
-    const parts = [];
+    const parts = [defaultMessage, ''];
     if (data.name) parts.push(`Nombre: ${data.name}`);
     if (data.zone) parts.push(`Zona: ${data.zone}`);
     if (data.goal) parts.push(`Interés: ${data.goal}`);
     if (data.msg) parts.push(`Mensaje: ${data.msg}`);
-    parts.push('—');
-    parts.push('Enviado desde habitat16.com');
-    return parts.join('\n');
+    return parts.join('\n').trim();
   };
 
   const openWhatsApp = (message = '') => {
