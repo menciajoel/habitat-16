@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://habitat16.com/sitemap.xml
